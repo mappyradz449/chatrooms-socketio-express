@@ -22,7 +22,7 @@ export default function Home() {
   }, []);
 
   function onConnect() {
-    console.log("[client] Connected ");
+    console.log("[client] Connected to :  ", socket.id);
   }
   function onDisconnect() {
     console.log("Disconnected");
@@ -36,7 +36,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="">
       <ChatContainer />
     </div>
   );

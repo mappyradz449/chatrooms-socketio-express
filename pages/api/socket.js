@@ -14,7 +14,7 @@ export default function SocketHandler(req, res) {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
-      console.log("[app] Connected to new client -", socket.id);
+      console.log("[server] Connected to new client -", socket.id);
 
       socket.on("send-message", (message, roomId) => {
         const parsedMessage = JSON.parse(message);
