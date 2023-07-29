@@ -37,10 +37,12 @@ const SendMessageForm = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+
             const msgVal = inputRef.current;
             const roomVal = joinRef.current;
             onSendMessage(msgVal, roomVal);
             onRoomJoin(roomVal);
+            e.target.reset();
           }}
         >
           <div className="flex  w-full max-w-3xl space-x-2 m-4">
