@@ -2,12 +2,12 @@ import SendMessageForm from "@/components/SendMessageForm";
 import MessageContainer from "@/components/containers/MessageContainer";
 import Navbar from "@/components/Navbar";
 
-const ChatContainer = () => {
+const ChatContainer = ({ user, roomId }) => {
   return (
     <div>
-      <Navbar />
+      <Navbar userName={user.name} roomId={roomId} />
       <MessageContainer />
-      <SendMessageForm />
+      <SendMessageForm user={user} roomId={roomId} />
     </div>
   );
 };

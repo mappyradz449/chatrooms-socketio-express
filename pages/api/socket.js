@@ -18,10 +18,12 @@ export default function SocketHandler(req, res) {
 
       socket.on("send-message", (message, roomId) => {
         const parsedMessage = JSON.parse(message);
-
+        let date = new Date().toJSON();
+        console.log(date);
         const newMessage = {
           ...parsedMessage,
           id: uuidv4(),
+          time: date,
         };
         console.log("[server msg]", newMessage, roomId);
         if (roomId === "") {

@@ -67,7 +67,7 @@ const MessageContainer = () => {
   ]);
 
   return (
-    <div className="mt-20 mb-56 overflow-y-auto">
+    <div className="mt-24 mb-40 overflow-y-auto">
       {messages.map((message) => {
         //console.log(message);
         return message.self ? (

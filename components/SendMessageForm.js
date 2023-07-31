@@ -6,78 +6,56 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Form } from "./ui/form";
 
-const SendMessageForm = () => {
+const SendMessageForm = ({ user, roomId }) => {
   const inputRef = useRef("");
-  const joinRef = useRef("");
 
-  const onSendMessage = ({ value: message }, { value: roomId }) => {
-    //console.log(roomId);
+  const sendNewMessage = ({ value: message }) => {
     const newMessage = {
       content: message,
-      sender: {
-        name: "User 1",
-        id: socket.id,
-      },
+      sender: user,
     };
     console.log("[SendMessageForm]", newMessage, roomId);
     socket.emit("send-message", JSON.stringify(newMessage), roomId);
   };
 
-  const onRoomJoin = ({ value: roomId }) => {
-    //console.log(roomId);
-
-    //console.log("[AssignRoomForm]", newRoom);
-    socket.emit("join-room", roomId);
-  };
-  // socket.on("send-message", onSendMessage);
-
   return (
-    <div className="bg-slate-300 fixed bottom-0 w-full py-10 shadow-lg flex  justify-center">
-      <div className="flex">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
+    <div className="bg-gray-900 fixed bottom-0 w-full shadow-lg flex justify-center h-32">
+      <form
+        className="w-full flex flex-col justify-center"
+        onSubmit={(e) => {
+          e.preventDefault();
 
-            const msgVal = inputRef.current;
-            const roomVal = joinRef.current;
-            onSendMessage(msgVal, roomVal);
-            onRoomJoin(roomVal);
-            e.target.reset();
-          }}
-        >
-          <div className="flex  w-full max-w-3xl space-x-2 m-4">
-            <Input
-              ref={inputRef}
-              type="text"
-              //value={message}
-              placeholder="Type a message"
-              className="w-3/4 p-2 rounded-2xl placeholder:italic"
-            />
-            <Button type="submit" className="mx-2 w-auto rounded-2xl">
-              Send
-              <div className="rounded-full bg-blue-500 p-2 m-2">
-                <BsSendFill className="w-3 h-3 text-white" />
-              </div>
-            </Button>
-          </div>
+          const msgVal = inputRef.current;
 
-          <div className="flex  w-full max-w-3xl  space-x-2 m-4">
-            <Input
-              ref={joinRef}
-              type="text"
-              //value={message}
-              placeholder="Enter Room ID"
-              className="w-full p-2 rounded-2xl placeholder:italic"
-            />
-            <Button type="submit" className="mx-2 w-auto rounded-2xl">
-              Join
-              <div className="rounded-full bg-blue-500 p-2 m-2">
-                <TbArrowsJoin2 className="w-4 h-4 text-white" />
-              </div>
-            </Button>
-          </div>
-        </form>
-      </div>
+          sendNewMessage(msgVal);
+          e.target.reset();
+        }}
+      >
+        <div className="flex space-x-2 m-4 items-center">
+          <Input
+            ref={inputRef}
+            type="text"
+            placeholder="Type a message"
+            className="p-2 placeholder:italic text-lg w-full mx-2"
+          />
+          {/*           
+
+          // TODO: IF you want to use this, use shadcn's textarea component
+          <textarea
+            ref={inputRef}
+            type="text"
+            placeholder="Type a message"
+            rows={1}
+            className="p-2 placeholder:italic text-lg rounded-lg w-full mx-2"
+          /> */}
+          <Button
+            type="submit"
+            className="mx-2 w-auto text-md bg-gray-700 text-white outline"
+          >
+            Send
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
