@@ -4,9 +4,6 @@
       "baseUrl": [
         "."
       ],
-      "@/components/ui/*": [
-        "./components/ui/*"
-      ],
       "@/*": [
         "./*"
       ]
