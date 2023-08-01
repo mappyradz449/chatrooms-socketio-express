@@ -3,7 +3,7 @@ import OwnMessage from "@/components/messages/OwnMessage";
 import OtherUserMessage from "@/components/messages/OtherUserMessage";
 import { socket } from "@/utils/socket";
 
-import { useToast } from "../../components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast"
 
 
 const MessageContainer = ({ userName }) => {
