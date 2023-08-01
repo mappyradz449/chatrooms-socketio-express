@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { socket } from "@/utils/socket";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/input";
+import { Button } from "@/components/button";
 
 const SendMessageForm = ({ user, roomId }) => {
   const inputRef = useRef("");

@@ -6,7 +6,7 @@ import ChatContainer from "@/components/containers/ChatContainer";
 import { socket } from "@/utils/socket";
 
 import { useRouter } from "next/router";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/toaster"
 
 export default function ChatPage() {
   const router = useRouter();
