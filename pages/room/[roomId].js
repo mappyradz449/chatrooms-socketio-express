@@ -6,6 +6,7 @@ import ChatContainer from "@/components/containers/ChatContainer";
 import { socket } from "@/utils/socket";
 
 import { useRouter } from "next/router";
+import { Toaster } from "@/components/ui/toaster"
 
 const ChatPage = () => {
   const router = useRouter();
@@ -27,7 +28,8 @@ const ChatPage = () => {
       setCurrentRoomId(router.query.roomId);
 
       // socket can be connected now
-      socket.emit("join-room", router.query.roomId);
+      const data = {roomId: router.query.roomId, userName: router.query.userName};
+      socket.emit("join-room", JSON.stringify(data));
     }
   }, [router.query]);
 
@@ -46,6 +48,7 @@ const ChatPage = () => {
   return (
     <div className="">
       <ChatContainer user={currentUser} roomId={currentRoomId} />
+      <Toaster />
     </div>
   );
 };

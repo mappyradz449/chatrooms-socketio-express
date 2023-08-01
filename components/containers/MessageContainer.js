@@ -1,37 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import OwnMessage from "@/components/messages/OwnMessage";
 import OtherUserMessage from "@/components/messages/OtherUserMessage";
 import { socket } from "@/utils/socket";
 
-const MessageContainer = () => {
-  const MAX_ROOM = 4;
+import { useToast } from "@/components/ui/use-toast"
+
+
+const MessageContainer = ({ userName }) => {
+    const { toast } = useToast()
+  const messageEndRef = useRef(null); //for auto scroll behaviour
+
+  const [joinMsg, setJoinMsg] = useState(false); //state to display who joined the room
 
   const onReceiveMessage = (message) => {
     const parsedMessage = JSON.parse(message);
-    console.log(parsedMessage);
+    //console.log(parsedMessage);
     const newMessage = {
       ...parsedMessage,
-      self: parsedMessage.sender.id === socket.id,
+      self: parsedMessage.sender.id === socket.id
     };
-
+    console.log(newMessage);
     setMessages((oldMessages) => {
       return [...oldMessages, newMessage];
     });
     //console.log(messages);
   };
 
-  const onJoin = (roomData) => {
-    //const parsedRoomData = JSON.parse(roomData);
-    console.log(roomData + "has joined chat app");
+  const onReceiveJoin = (userName) => {
+    
   };
+
+  const onUserJoined = (userName) =>{
+    console.log("NEW USER", userName)
+    toast({
+      title: `${userName} has joined the chat!`,
+    })
+  }
 
   useEffect(() => {
     socket.on("receive-message", onReceiveMessage);
-
-    socket.on("receive-join", onJoin);
+    socket.on("receive-join", onReceiveJoin);
+    socket.on("user-joined", onUserJoined);
 
     return () => {
       socket.off("receive-message");
+      socket.off("receive-join");
+      socket.off("user-joined");
     };
   }, []);
 
@@ -65,25 +79,49 @@ const MessageContainer = () => {
     //   self: true,
     // },
   ]);
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView();
+  }, [messages]);
 
   return (
     <div className="mt-24 mb-40 overflow-y-auto">
       {messages.map((message) => {
+        // {
+        //   joinMsg ? (
+        //     <div>
+        //       <p>{message.text}</p>
+        //     </div>
+        //   ) : null;
+        // }
         //console.log(message);
+
         return message.self ? (
           <OwnMessage
             content={message.content}
             key={message.id}
             sender={message.sender.name}
+            time={message.time}
+            
           />
         ) : (
           <OtherUserMessage
             content={message.content}
             key={message.id}
             sender={message.sender.name}
+            time={message.time}
+           
           />
         );
       })}
+
+      {joinMsg ? (
+        <div className="flex justify-center">
+          <p>{userName} has joined the room</p>
+        </div>
+      ) : null}
+
+      {/* for scroll behaviour */}
+      <div ref={messageEndRef} className="scroll-smooth" />
     </div>
   );
 };

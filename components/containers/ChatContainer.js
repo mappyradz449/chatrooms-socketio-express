@@ -6,7 +6,7 @@ const ChatContainer = ({ user, roomId }) => {
   return (
     <div>
       <Navbar userName={user.name} roomId={roomId} />
-      <MessageContainer />
+      <MessageContainer userName={user.name} />
       <SendMessageForm user={user} roomId={roomId} />
     </div>
   );

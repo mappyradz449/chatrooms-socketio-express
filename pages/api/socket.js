@@ -3,6 +3,8 @@ const express = require("express");
 const { Server } = require("socket.io");
 const { v4: uuidv4 } = require("uuid");
 
+var format = require("date-fns/format");
+
 export default function SocketHandler(req, res) {
   if (res.socket.server.io) {
     console.log("[server] Socket alreaady running ...");
@@ -13,17 +15,19 @@ export default function SocketHandler(req, res) {
     const io = new Server(res.socket.server);
     res.socket.server.io = io;
 
+
     io.on("connection", (socket) => {
       console.log("[server] Connected to new client -", socket.id);
 
       socket.on("send-message", (message, roomId) => {
         const parsedMessage = JSON.parse(message);
-        let date = new Date().toJSON();
+        const date = new Date();
+        const formattedDate = format(date, "PPpp");
         console.log(date);
         const newMessage = {
           ...parsedMessage,
           id: uuidv4(),
-          time: date,
+          time: formattedDate,
         };
         console.log("[server msg]", newMessage, roomId);
         if (roomId === "") {
@@ -35,11 +39,15 @@ export default function SocketHandler(req, res) {
         }
       });
 
-      socket.on("join-room", (roomId) => {
+      socket.on("join-room", (jsonData) => {
+        const {roomId, userName} = JSON.parse(jsonData);
         console.log("[server join]", roomId);
         socket.join(roomId); ///join the user to a socket room
         //let createdTime = Date.now();
-        io.to(roomId).emit("receive-join", roomId);
+  
+        console.log("User joined", userName);
+        socket.emit("receive-join", roomId);
+        io.to(roomId).emit("user-joined", userName)
       });
     });
 
