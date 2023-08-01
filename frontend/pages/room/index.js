@@ -1,4 +1,3 @@
-import { Button } from "@/components/button";
 import {
   Card,
   CardContent,
@@ -6,16 +5,18 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/card";
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
+} from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 
 import { useRef } from "react";
 import Router from "next/router";
-import Navbar from "@/components/Navbar";
+
+import { Button } from "../../components/ui/button";
+import { socket } from "../../utils/socket";
 //import { useRouter } from "next/router";
 
-export default function Room () {
+export default function Room() {
   const joinRoomRef = useRef();
   const userInputRef = useRef();
   return (
@@ -33,10 +34,12 @@ export default function Room () {
               const userName = userInputRef.current.value;
               const roomId = joinRoomRef.current.value;
 
+              //console.log(socket.id);
               Router.push({
                 pathname: `/room/${roomId}`,
                 query: {
                   userName: userName,
+                  id: socket.id,
                 },
               });
 
@@ -77,4 +80,4 @@ export default function Room () {
       </Card>
     </div>
   );
-};
+}
