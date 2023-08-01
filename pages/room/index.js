@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,16 +6,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 
 import { useRef } from "react";
 import Router from "next/router";
 import Navbar from "@/components/Navbar";
 //import { useRouter } from "next/router";
 
-const Room = () => {
+export default function Room () {
   const joinRoomRef = useRef();
   const userInputRef = useRef();
   return (
@@ -78,5 +78,3 @@ const Room = () => {
     </div>
   );
 };
-
-export default Room;
