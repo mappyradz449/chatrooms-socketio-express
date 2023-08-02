@@ -3,11 +3,10 @@ import OwnMessage from "@/components/messages/OwnMessage";
 import OtherUserMessage from "@/components/messages/OtherUserMessage";
 import { socket } from "@/utils/socket";
 
-import { useToast } from "@/components/use-toast"
-
+import { useToast } from "@/components/ui/use-toast";
 
 const MessageContainer = ({ userName }) => {
-    const { toast } = useToast()
+  const { toast } = useToast();
   const messageEndRef = useRef(null); //for auto scroll behaviour
 
   const [joinMsg, setJoinMsg] = useState(false); //state to display who joined the room
@@ -17,7 +16,7 @@ const MessageContainer = ({ userName }) => {
     //console.log(parsedMessage);
     const newMessage = {
       ...parsedMessage,
-      self: parsedMessage.sender.id === socket.id
+      self: parsedMessage.sender.id === socket.id,
     };
     console.log(newMessage);
     setMessages((oldMessages) => {
@@ -26,16 +25,14 @@ const MessageContainer = ({ userName }) => {
     //console.log(messages);
   };
 
-  const onReceiveJoin = (userName) => {
-    
-  };
+  const onReceiveJoin = (userName) => {};
 
-  const onUserJoined = (userName) =>{
-    console.log("NEW USER", userName)
+  const onUserJoined = (userName) => {
+    console.log("NEW USER", userName);
     toast({
       title: `${userName} has joined the chat!`,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     socket.on("receive-message", onReceiveMessage);
@@ -86,22 +83,12 @@ const MessageContainer = ({ userName }) => {
   return (
     <div className="mt-24 mb-40 overflow-y-auto">
       {messages.map((message) => {
-        // {
-        //   joinMsg ? (
-        //     <div>
-        //       <p>{message.text}</p>
-        //     </div>
-        //   ) : null;
-        // }
-        //console.log(message);
-
         return message.self ? (
           <OwnMessage
             content={message.content}
             key={message.id}
             sender={message.sender.name}
             time={message.time}
-            
           />
         ) : (
           <OtherUserMessage
@@ -109,7 +96,6 @@ const MessageContainer = ({ userName }) => {
             key={message.id}
             sender={message.sender.name}
             time={message.time}
-           
           />
         );
       })}
